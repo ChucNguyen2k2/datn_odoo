@@ -1,0 +1,17 @@
+<odoo>
+    <record id="view_employee_form_custom" model="ir.ui.view">
+        <field name="name">hr.employee.form.custom</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Thông tin giáo viên">
+                    <field name="subject_teach"/>
+                    <field name="homeroom_class"/>
+                    <field name="education_level"/>
+                    <field name="work_schedule"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

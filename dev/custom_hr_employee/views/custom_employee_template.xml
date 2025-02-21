@@ -1,0 +1,29 @@
+<odoo>
+    <template id="custom_employee_template" name="Employee List">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1 class="text-primary">Danh sách giáo viên</h1>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Tên</th>
+                            <th>Môn giảng dạy</th>
+                            <th>Lớp chủ nhiệm</th>
+                            <th>Trình độ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="employees" t-as="employee">
+                            <tr>
+                                <td><t t-esc="employee.name"/></td>
+                                <td><t t-esc="employee.subject_teach or 'N/A'"/></td>
+                                <td><t t-esc="employee.homeroom_class or 'N/A'"/></td>
+                                <td><t t-esc="employee.education_level or 'N/A'"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+</odoo>
