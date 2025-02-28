@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Form view -->
     <record id="view_employee_form_custom" model="ir.ui.view">
         <field name="name">hr.employee.form.custom</field>
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
-            <!-- Thêm các trường tùy chỉnh -->
             <xpath expr="//field[@name='department_id']" position="after">
                 <field name="facility"/>
                 <field name="department_type"/>
                 <field name="position"/>
             </xpath>
-            <!-- Ẩn các trường không cần thiết -->
             <field name="work_phone" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
@@ -34,7 +31,6 @@
         </field>
     </record>
 
-    <!-- Tree view -->
     <record id="view_employee_tree_custom" model="ir.ui.view">
         <field name="name">hr.employee.tree.custom</field>
         <field name="model">hr.employee</field>
@@ -45,7 +41,6 @@
                 <field name="department_type"/>
                 <field name="position"/>
             </xpath>
-            <!-- Ẩn cột không cần thiết -->
             <field name="work_phone" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
