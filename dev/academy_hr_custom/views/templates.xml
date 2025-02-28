@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="employee_list_template" name="Employee List">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1>Danh sách nhân viên</h1>
+                <table class="table">
+                    <tr>
+                        <th>Tên</th>
+                        <th>Cơ sở</th>
+                        <th>Chức vụ</th>
+                    </tr>
+                    <t t-foreach="employees" t-as="employee">
+                        <tr>
+                            <td><t t-esc="employee.name"/></td>
+                            <td><t t-esc="employee.facility"/></td>
+                            <td><t t-esc="employee.position"/></td>
+                        </tr>
+                    </t>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="employee_detail_template" name="Employee Detail">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1>Thông tin nhân viên</h1>
+                <p><strong>Tên:</strong> <t t-esc="employee.name"/></p>
+                <p><strong>Cơ sở:</strong> <t t-esc="employee.facility"/></p>
+                <p><strong>Loại phòng ban:</strong> <t t-esc="employee.department_type"/></p>
+                <p><strong>Chức vụ:</strong> <t t-esc="employee.position"/></p>
+            </div>
+        </t>
+    </template>
+</odoo>
