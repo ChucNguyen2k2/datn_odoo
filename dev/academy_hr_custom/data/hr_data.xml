@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dữ liệu mẫu cho phòng ban -->
+    <record id="dept_north_director" model="hr.department">
+        <field name="name">Ban Giám đốc - Phía Bắc</field>
+        <field name="facility">north</field>
+        <field name="department_type">director</field>
+    </record>
+    <record id="dept_south_faculty" model="hr.department">
+        <field name="name">Khoa Mật mã - Phía Nam</field>
+        <field name="facility">south</field>
+        <field name="department_type">faculty</field>
+    </record>
+    <record id="dept_north_functional" model="hr.department">
+        <field name="name">Phòng Hành chính - Phía Bắc</field>
+        <field name="facility">north</field>
+        <field name="department_type">functional</field>
+    </record>
+</odoo>
