@@ -1,0 +1,46 @@
+<odoo>
+    <!-- Form View -->
+    <record id="view_library_book_form" model="ir.ui.view">
+        <field name="name">library.book.form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form string="Thông tin sách">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="author"/>
+                        <field name="publish_date"/>
+                        <field name="isbn"/>
+                        <field name="category"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_library_book_tree" model="ir.ui.view">
+        <field name="name">library.book.tree</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <tree string="Danh sách sách">
+                <field name="name" optional="show"/>
+                <field name="author" optional="show"/>
+                <field name="publish_date" optional="hide"/>
+                <field name="isbn" optional="hide"/>
+                <field name="category" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_library_book" model="ir.actions.act_window">
+        <field name="name">Quản lý sách</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_library_root" name="Thư viện" sequence="10"/>
+    <menuitem id="menu_library_book" name="Sách" parent="menu_library_root" action="action_library_book" sequence="10"/>
+</odoo>

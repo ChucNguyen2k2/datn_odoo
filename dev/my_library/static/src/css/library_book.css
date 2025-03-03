@@ -1,0 +1,6 @@
+.o_list_view .o_list_table th {
+    min-width: 100px;
+    white_space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
