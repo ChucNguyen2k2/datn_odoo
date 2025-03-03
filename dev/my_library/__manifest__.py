@@ -5,7 +5,7 @@
     'summary': 'Quản lý sách trong thư viện',
     'description': 'Module đơn giản để quản lý sách',
     'category': 'Tools',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'data': [
         'views/library_book_views.xml',
         'security/ir.model.access.csv',

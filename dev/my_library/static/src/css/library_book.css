@@ -4,3 +4,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.o_list_view .o_image {
+    width: 3px;  /* Đặt chiều rộng mong muốn, ví dụ 30px */
+    height: 3px; /* Đặt chiều cao mong muốn, ví dụ 30px */
+    object-fit: cover; /* Cắt ảnh để giữ tỷ lệ, tránh méo mó */
+}
