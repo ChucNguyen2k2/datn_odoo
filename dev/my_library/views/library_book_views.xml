@@ -12,6 +12,11 @@
                         <field name="publish_date"/>
                         <field name="isbn"/>
                         <field name="category"/>
+                        <field name="count"/>
+                    </group>
+                    <group string="Tệp sách và ảnh bìa">
+                        <field name="cover_image" widget="image" class="oe_avatar"/>
+                        <field name="book_file" filename="book_file"/>
                     </group>
                 </sheet>
             </form>
@@ -29,6 +34,7 @@
                 <field name="publish_date" optional="hide"/>
                 <field name="isbn" optional="hide"/>
                 <field name="category" optional="show"/>
+                <field name="count" optional="show"/>
             </tree>
         </field>
     </record>
