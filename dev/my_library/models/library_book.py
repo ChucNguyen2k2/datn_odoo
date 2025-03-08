@@ -2,10 +2,13 @@ from odoo import models, fields, api, exceptions
 from odoo.addons.mail.models.mail_thread import MailThread
 import base64
 
+
 class LibraryBook(models.Model, MailThread):
     _name = 'library.book'
     _description = 'Library Book ChucDEV'
+    _order = 'book_id asc'  # Sắp xếp theo book_id tăng dần
 
+    book_id = fields.Integer(string='ID Sách', readonly=True, copy=False)
     name = fields.Char(string='Tên sách', required=True)
     author = fields.Char(string='Tác giả')
     publish_date = fields.Date(string='Ngày xuất bản')
@@ -23,6 +26,32 @@ class LibraryBook(models.Model, MailThread):
     )
     book_file = fields.Binary(string='File sách', attachment=True)
     cover_image = fields.Binary(string='Ảnh bìa', attachment=True)
+
+    @api.model
+    def create(self, vals):
+        """ Gán ID sách tự động khi tạo mới """
+        last_book = self.search([], order="book_id desc", limit=1)
+        new_book_id = (last_book.book_id + 1) if last_book and last_book.book_id else 1  # Sửa lỗi book_id bị 0
+        vals['book_id'] = new_book_id
+
+        # Kiểm tra nếu không có file sách
+        if 'book_file' not in vals or not vals['book_file']:
+            raise exceptions.ValidationError("Vui lòng tải file sách lên trước khi lưu")
+
+        record = super(LibraryBook, self).create(vals)
+        record.message_post(body=f'Sách "{record.name}" đã được tạo thành công!', message_type="notification")
+        return record
+
+    def unlink(self):
+        """ Xóa sách và cập nhật lại ID """
+        res = super(LibraryBook, self).unlink()
+        books = self.search([], order="id asc")
+
+        # Cập nhật lại ID sách
+        for index, book in enumerate(books, start=1):
+            book.book_id = index
+
+        return res
 
     @api.depends('name', 'author')
     def _compute_display_name(self):
@@ -54,7 +83,6 @@ class LibraryBook(models.Model, MailThread):
                 except Exception:
                     raise exceptions.ValidationError("Ảnh bìa không hợp lệ! Vui lòng kiểm tra lại file.")
 
-    # Trong create (thêm thông báo popup sau khi tạo)
     # Trong create (nếu muốn thêm popup nhưng giữ logic Odoo)
     @api.model
     def create(self, vals):
@@ -75,7 +103,6 @@ class LibraryBook(models.Model, MailThread):
         }
         # Gửi action qua JavaScript hoặc không làm gián đoạn return
         return record  # Vẫn trả về bản ghi
-
 
     # Trong write (cho cover_image, tương tự)
     def write(self, vals):

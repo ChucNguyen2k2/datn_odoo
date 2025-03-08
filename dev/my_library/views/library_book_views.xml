@@ -7,6 +7,7 @@
             <form string="Thông tin sách">
                 <sheet>
                     <group>
+                        <field name="book_id" readonly="1"/> <!-- Thêm ID sách -->
                         <field name="name"/>
                         <field name="author"/>
                         <field name="publish_date"/>
@@ -16,7 +17,7 @@
                     </group>
                     <group string="Tệp sách và ảnh bìa">
                         <field name="cover_image" widget="image" class="oe_avatar"/>
-                        <field name="book_file"/> <!-- Bỏ filename -->
+                        <field name="book_file"/>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -33,7 +34,8 @@
         <field name="model">library.book</field>
         <field name="arch" type="xml">
             <tree string="Danh sách sách">
-                <field name="cover_image" widget="image" optional="show"/> <!-- Thêm trường cover_image -->
+                <field name="book_id" readonly="1"/> <!-- Hiển thị ID sách -->
+                <field name="cover_image" widget="image" optional="show"/>
                 <field name="name" optional="show"/>
                 <field name="author" optional="show"/>
                 <field name="publish_date" optional="hide"/>

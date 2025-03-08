@@ -15,6 +15,7 @@
             'my_library/static/src/css/library_book.css'
         ]
     },
+    'images': ['static/description/icon.png'],
     'installable': True,
     'auto_install': False,
     'application': True,
