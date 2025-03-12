@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="school_hr_root" name="Quản lý nhân sự" sequence="1"/>
+    <menuitem id="menu_employee" name="Nhân viên" parent="school_hr_root" action="action_employee"/>
+    <menuitem id="menu_department" name="Phòng ban" parent="school_hr_root" action="action_department"/>
+</odoo>

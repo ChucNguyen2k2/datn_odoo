@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_department_tree" model="ir.ui.view">
+        <field name="name">school.department.tree</field>
+        <field name="model">school.department</field>
+        <field name="arch" type="xml">
+            <tree string="Danh sách phòng ban">
+                <field name="name"/>
+                <field name="manager_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_department_kanban" model="ir.ui.view">
+        <field name="name">school.department.kanban</field>
+        <field name="model">school.department</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <div class="oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <h3><field name="name"/></h3>
+                                    <div><field name="manager_id"/></div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_department_form" model="ir.ui.view">
+        <field name="name">school.department.form</field>
+        <field name="model">school.department</field>
+        <field name="arch" type="xml">
+            <form string="Thông tin phòng ban">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="manager_id"/>
+                        <field name="employee_ids" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_save" string="Lưu" type="object" class="btn-primary"/>
+                    <button name="action_delete" string="Xóa" type="object" class="btn-danger" confirm="Bạn có chắc chắn muốn xóa bản ghi này?"/>
+                    <button string="Hủy" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_department" model="ir.actions.act_window">
+        <field name="name">Phòng ban</field>
+        <field name="res_model">school.department</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+</odoo>
