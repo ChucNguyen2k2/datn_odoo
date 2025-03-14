@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/school_attendance_log/static/css/custom_style.css"/>
+            <script type="text/javascript" src="/school_attendance_log/static/js/attendance.js"/>
+        </xpath>
+    </template>
+</odoo>
