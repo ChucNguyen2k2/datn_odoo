@@ -1,32 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- View Kiosk sử dụng QWeb -->
     <record id="view_attendance_log_kiosk" model="ir.ui.view">
         <field name="name">school.attendance.log.kiosk</field>
         <field name="model">hr.employee</field>
+        <field name="type">qweb</field>
         <field name="arch" type="xml">
-            <kiosk>
-                <t t-foreach="employees" t-as="employee">
-                    <div class="attendance-card">
-                        <img t-att-src="kanban_image('hr.employee', 'image', employee.id)" class="employee-image"/>
-                        <h3><t t-esc="employee.name"/></h3>
-                        <button name="attendance_action" type="object" class="btn-attendance" t-att-data-employee-id="employee.id">
-                            <t t-if="employee.attendance_state == 'checked_in'">Check Out</t>
-                            <t t-else="">Check In</t>
-                        </button>
-                    </div>
-                </t>
-            </kiosk>
+            <t t-name="school.attendance.log.kiosk">
+                <div class="oe_kiosk">
+                    <t t-foreach="employees" t-as="employee">
+                        <div class="attendance-card">
+                            <img t-att-src="kanban_image('hr.employee', 'image_128', employee.id)" class="employee-image"/>
+                            <h3><t t-esc="employee.name"/></h3>
+                            <button name="attendance_manual" type="object" class="btn-attendance" t-att-data-employee-id="employee.id">
+                                <t t-if="employee.attendance_state == 'checked_in'">Check Out</t>
+                                <t t-else="">Check In</t>
+                            </button>
+                        </div>
+                    </t>
+                </div>
+            </t>
         </field>
     </record>
 
-    <record id="action_attendance_log_kiosk" model="ir.actions.client">
+    <!-- Action để mở view kiosk -->
+    <record id="action_attendance_log_kiosk" model="ir.actions.act_window">
         <field name="name">Attendance Kiosk</field>
-        <field name="tag">kiosk_mode</field>
-        <field name="params" eval="{'action': 'school_attendance_log.action_attendance_kiosk', 'views': [[False, 'kiosk']]}"/>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kiosk</field>
+        <field name="view_id" ref="view_attendance_log_kiosk"/>
     </record>
 
-    <menuitem id="menu_attendance_log" name="Attendance Kiosk" parent="school_hr_root" action="action_attendance_log_kiosk" sequence="2"/>
+    <!-- Menu để mở action -->
+    <menuitem id="menu_attendance_log_kiosk"
+              name="Attendance Kiosk"
+              parent="hr_attendance.menu_hr_attendance_root"
+              action="action_attendance_log_kiosk"
+              sequence="2"/>
 
+    <!-- View Tree cho school.attendance.log -->
     <record id="view_attendance_log_tree" model="ir.ui.view">
         <field name="name">school.attendance.log.tree</field>
         <field name="model">school.attendance.log</field>
@@ -43,6 +55,7 @@
         </field>
     </record>
 
+    <!-- View Form cho school.attendance.log -->
     <record id="view_attendance_log_form" model="ir.ui.view">
         <field name="name">school.attendance.log.form</field>
         <field name="model">school.attendance.log</field>
@@ -63,9 +76,17 @@
         </field>
     </record>
 
+    <!-- Action cho school.attendance.log -->
     <record id="action_attendance_log" model="ir.actions.act_window">
         <field name="name">Attendance Logs</field>
         <field name="res_model">school.attendance.log</field>
         <field name="view_mode">tree,form</field>
     </record>
+
+    <!-- Menu cho action Attendance Logs -->
+    <menuitem id="menu_attendance_log"
+              name="Attendance Logs"
+              parent="hr_attendance.menu_hr_attendance_root"
+              action="action_attendance_log"
+              sequence="3"/>
 </odoo>

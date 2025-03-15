@@ -1,9 +1,7 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
-import geopy.geocoders
-from geopy.exc import GeocoderTimedOut
+from odoo.http import request
+import geocoder
 import socket
-
 
 class AttendanceLog(models.Model):
     _name = 'school.attendance.log'
@@ -20,12 +18,10 @@ class AttendanceLog(models.Model):
 
     @api.model
     def create(self, vals):
-        # Lấy địa chỉ IP của thiết bị
         ip_address = self._get_client_ip()
         vals['ip_address'] = ip_address
 
-        # Lấy geolocation dựa trên IP
-        if ip_address:
+        if ip_address and ip_address != 'Unknown':
             latitude, longitude, location = self._get_geolocation(ip_address)
             vals['latitude'] = latitude
             vals['longitude'] = longitude
@@ -34,42 +30,48 @@ class AttendanceLog(models.Model):
         return super(AttendanceLog, self).create(vals)
 
     def _get_client_ip(self):
-        """Lấy địa chỉ IP của máy client."""
         try:
-            ip = self.env['ir.http']._get_client_ip()
+            ip = request.httprequest.remote_addr if request else False
             return ip or 'Unknown'
         except Exception:
             return 'Unknown'
 
     def _get_geolocation(self, ip_address):
-        """Lấy thông tin địa điểm dựa trên IP sử dụng geopy."""
         try:
-            geolocator = geopy.geocoders.Nominatim(user_agent="school_attendance_log")
-            location = geolocator.geocode(ip_address, language='en')
-            if location:
-                return location.latitude, location.longitude, location.address
+            g = geocoder.ip(ip_address)
+            if g.ok:
+                return g.latlng[0], g.latlng[1], g.address
             return 0.0, 0.0, 'Unknown'
-        except (GeocoderTimedOut, ValueError):
+        except Exception:
             return 0.0, 0.0, 'Geolocation unavailable'
 
-    def attendance_manual(self, employee_id, latitude, longitude):
-        employee = self.env['hr.employee'].browse(employee_id)
-        if not employee:
-            return {'success': False, 'message': 'Employee not found'}
+    def attendance_manual(self):
+        self.ensure_one()
+        employee = self
+        ip_address = self._get_client_ip()
+        latitude, longitude, location = self._get_geolocation(ip_address)
 
-        # Kiểm tra trạng thái chấm công hiện tại
-        attendance = self.search([('employee_id', '=', employee.id), ('check_out', '=', False)], limit=1)
+        attendance = self.env['school.attendance.log'].search([
+            ('employee_id', '=', employee.id),
+            ('check_out', '=', False)
+        ], limit=1)
+
         if attendance:
             attendance.write({
                 'check_out': fields.Datetime.now(),
                 'latitude': latitude,
                 'longitude': longitude,
+                'location': location,
             })
         else:
-            self.create({
+            self.env['school.attendance.log'].create({
                 'employee_id': employee.id,
                 'check_in': fields.Datetime.now(),
                 'latitude': latitude,
                 'longitude': longitude,
+                'location': location,
+                'ip_address': ip_address,
             })
-        return {'success': True}
+
+        employee._attendance_action_change()
+        return {'type': 'ir.actions.act_window_close'}

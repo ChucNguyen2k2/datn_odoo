@@ -7,8 +7,9 @@
     'category': 'Tools',
     'depends': ['base', 'mail'],
     'data': [
-        'views/library_book_views.xml',
-        'security/ir.model.access.csv',
+        'security/access_rules.xml',
+        'views/attendance_log_views.xml',
+        'views/assets.xml',
     ],
     'asset': {
         'web.assets_backend': [
